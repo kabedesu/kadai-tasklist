@@ -41,9 +41,13 @@ class TasksController extends Controller
     public function store(Request $request)
     {   
         //空文字&文字数のバリデーション
-        $this->validate($request,['content'=>'required|max:191']);
+        $this->validate($request,[
+            'status'=>'required|max:10', //statusカラムvarchar(10)追加分
+            'content'=>'required|max:191',
+        ]);
         
         $task = new Task;
+        $task->status = $request->status; //statusカラム追加分
         $task->content = $request->content;
         $task->save();
         return redirect('/');
@@ -86,9 +90,13 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
         //空文字&文字数のバリデーション
-        $this->validate($request,['content'=>'required|max:191']);
+        $this->validate($request,[
+                'status'=>'required|max:10', //statusカラムvarchar(10)
+                'content'=>'required|max:191',
+            ]);
         
         $task = Task::find($id);
+        $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
         return redirect('/');
